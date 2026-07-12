@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مُقيّم ميزانية السيارة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="page">
+
+  <header class="masthead">
+    <div class="masthead__eyebrow">تقدير مالي · بيانات العميل</div>
+    <h1 class="masthead__title">مُقيّم ميزانية السيارة</h1>
+    <p class="masthead__sub">إدخل البيانات المالية، وهيتم تقدير المبلغ المتوقع إنفاقه على شراء سيارة، بناءً على نموذج تعلّم آلي مُدرّب على بيانات عملاء فعلية.</p>
+  </header>
+
+  <main class="desk">
+
+    <!-- Intake form -->
+    <section class="intake" aria-label="بيانات العميل">
+      <form id="predict-form" novalidate>
+
+        <div class="field">
+          <label class="field__label" for="gender">
+            <span class="field__num">01</span> النوع
+          </label>
+          <div class="segmented" role="radiogroup" aria-label="النوع">
+            <input type="radio" id="gender-male" name="gender" value="male" checked>
+            <label for="gender-male">ذكر</label>
+            <input type="radio" id="gender-female" name="gender" value="female">
+            <label for="gender-female">أنثى</label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="age">
+            <span class="field__num">02</span> السن
+          </label>
+          <div class="field__control">
+            <input type="number" id="age" name="age" min="16" max="100" step="1" placeholder="مثال: 42" required>
+            <span class="field__unit">سنة</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="salary">
+            <span class="field__num">03</span> الدخل السنوي
+          </label>
+          <div class="field__control">
+            <input type="number" id="salary" name="salary" min="0" step="1" placeholder="مثال: 62000" required>
+            <span class="field__unit">$</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="debt">
+            <span class="field__num">04</span> مديونية البطاقة الائتمانية
+          </label>
+          <div class="field__control">
+            <input type="number" id="debt" name="debt" min="0" step="1" placeholder="مثال: 11000" required>
+            <span class="field__unit">$</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="net_worth">
+            <span class="field__num">05</span> صافي الثروة
+          </label>
+          <div class="field__control">
+            <input type="number" id="net_worth" name="net_worth" min="0" step="1" placeholder="مثال: 238000" required>
+            <span class="field__unit">$</span>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submit-btn">
+          <span>احسب التقدير</span>
+        </button>
+
+        <p class="form-note">التقدير مبني على نموذج إحصائي، وممكن يختلف عن القرار الفعلي في أي عملية شراء حقيقية.</p>
+      </form>
+    </section>
+
+    <!-- Result ticket -->
+    <aside class="ticket-wrap" aria-live="polite">
+      <div class="ticket" id="ticket">
+
+        <div class="ticket__row ticket__row--head">
+          <span>إيصال تقدير</span>
+          <span id="ticket-id">#—</span>
+        </div>
+
+        <div class="ticket__divider"></div>
+
+        <div class="ticket__body" id="ticket-empty">
+          <p class="ticket__hint">لسه ملأتش البيانات.<br>هيظهر تقدير الميزانية هنا فور الحساب.</p>
+        </div>
+
+        <div class="ticket__body ticket__body--result" id="ticket-result" hidden>
+          <div class="ticket__label">الميزانية المتوقعة لشراء السيارة</div>
+          <div class="ticket__amount" id="ticket-amount">$0</div>
+          <div class="ticket__stamp" id="ticket-stamp">مُقدّر</div>
+
+          <div class="ticket__divider ticket__divider--dashed"></div>
+
+          <ul class="ticket__lines" id="ticket-summary"></ul>
+        </div>
+
+        <div class="ticket__body ticket__body--loading" id="ticket-loading" hidden>
+          <div class="loader"></div>
+          <p>جاري حساب التقدير…</p>
+        </div>
+
+        <div class="ticket__body ticket__body--error" id="ticket-error" hidden>
+          <p id="ticket-error-msg"></p>
+        </div>
+
+        <div class="ticket__teeth" aria-hidden="true"></div>
+      </div>
+    </aside>
+
+  </main>
+
+  <footer class="page-footer">
+    مبني بواسطة Flask + نموذج AdaBoost / ExtraTrees مُدرّب مسبقًا
+  </footer>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
